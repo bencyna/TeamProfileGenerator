@@ -1,0 +1,19 @@
+#head {
+    text-align: center;
+    background-color: #007CC7;
+    padding: 5%;
+    color: white;
+    margin-bottom: 4%;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+}
+
+.main {
+    text-align: center;
+    padding: 10px;
+    
+    /* padding-color: #203647; */
+}
