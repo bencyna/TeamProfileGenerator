@@ -6,10 +6,8 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 
 let responses = [];
-// let newFile = ``
 
 const genMan = () => {
-  // Create an array of questions for user input
   return inquirer
     .prompt([
       {
@@ -35,11 +33,10 @@ const genMan = () => {
     ])
     .then((answers) => {
       const { name, email, id, manNum } = answers;
-      const newManager = new Manager(name, id, email, manNum);
-      const managerData = [answers];
-      console.log(managerData);
+      const newManager = new Manager(name, id, email, manNum, "Manager");
       newManager.office(manNum);
-      responses.push(managerData);
+      newManager.getRole("Manager");
+      responses.push(newManager);
       genInOrEngorEx();
     });
 };
@@ -58,12 +55,12 @@ const genInOrEngorEx = () => {
       if (res.newEmployee == "Intern") {
         genIntern();
       }
-        if (res.newEmployee == "Engineer") {
-          genEngineer();
+      if (res.newEmployee == "Engineer") {
+        genEngineer();
       }
-        if (res.newEmployee == "No thanks, my team is ready!") {
-          writeFile();
-        }
+      if (res.newEmployee == "No thanks, my team is ready!") {
+        writeFile();
+      }
     });
 };
 
@@ -94,17 +91,17 @@ const genIntern = () => {
       },
     ])
     .then((res) => {
-      const {name, email, id, schoolAttend} = res;
-      const newIntern = new Intern(name, id, email, schoolAttend);
+      const { name, email, id, schoolAttend } = res;
+      const newIntern = new Intern(name, id, email, schoolAttend, "Intern");
+      newIntern.getRole("Intern");
       newIntern.getSchool(schoolAttend);
-      // responses.push(res);
-      // console.log(schoolAttend)
+      responses.push(newIntern);
       genInOrEngorEx();
     });
 };
 
 const genEngineer = () => {
-    return inquirer
+  return inquirer
     .prompt([
       {
         type: "input",
@@ -125,23 +122,91 @@ const genEngineer = () => {
         type: "input",
         message: "What is the Engineer's github link?",
         name: "github",
-      }
+      },
     ])
     .then((results) => {
-      const {name, email, id, github} = results;
-      const newEngineer = new Engineer(name, id, email, github);
+      const { name, email, id, github } = results;
+      const newEngineer = new Engineer(name, id, email, github, "Engineer");
       newEngineer.getGithub(github);
+      newManager.getRole("Engineer");
+      responses.push(newEngineer);
       genInOrEngorEx();
-      // responses.push(results);
     });
-}
-
+};
 
 const writeFile = () => {
- newFile = `${responses[1].name}`;
+  let newFile = "";
+  let addToFile = "";
+
+  for (let i = 0; i < responses.length; i++) {
+    let employee = responses[i];
+    let personName = employee.name;
+    let personEmail = employee.email;
+    let personId = employee.id;
+    let personRole = employee.role;
+    let extDet = "";
+
+    if (employee.officeNumber) {
+      extDet = employee.officeNumber;
+    }
+    if (employee.github) {
+      extDet = employee.github;
+    }
+    if (employee.schoolAttend) {
+      extDet = employee.schoolAttend;
+    }
+
+    addToFile += `<div class="col-md-4">
+  <header class="main">
+    <h4>${personName}</h4>
+    <h6>${personRole}</h6>
+  </header>  
+  <div class="bio">
+      <ul>
+          <li>id: ${personId}</li>
+          <li>Email: ${personEmail}</li>
+          <li>alternative: ${extDet}</li>
+      </ul>
+  </div>`;
+  }
+
+  newFile = newFile = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Generator</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header id="head"> 
+      <h1>Our Team</h1>
+    </header>
+    <main class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <section class="row">
+                    ${addToFile}                         
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </main>
+  </body>
+</html>
+`;
+
   fs.writeFile("index.html", newFile, null, (err) => {
     err
       ? console.log("Oops, there was a problem: " + err)
-      : console.log(responses[1].name);
+      : console.log(responses[0].name);
   });
 };
