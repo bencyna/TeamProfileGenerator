@@ -150,7 +150,7 @@ const writeFile = () => {
       extDet = `Office Number: ${employee.officeNumber}`;
     }
     if (employee.github) {
-      extDet = `Github: <a href = "${employee.github}" target = "_blank">Github</a>`;
+      extDet = `<a href = "${employee.github}" target = "_blank">Github</a>`;
     }
     if (employee.school) {
       extDet = `School: ${employee.school}`;
@@ -194,7 +194,7 @@ const writeFile = () => {
     </header>
     <main class="container">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <section class="row people">
             ${addToFile}                         
           </section>
