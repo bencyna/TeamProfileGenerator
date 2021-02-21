@@ -208,6 +208,6 @@ const writeFile = () => {
   fs.writeFile("./dist/index.html", newFile, null, (err) => {
     err
       ? console.log("Oops, there was a problem: " + err)
-      : console.log(responses[0].name);
+      : console.log("Your team was successfully created! Head over to dist/index.html to see your page");
   });
 };
