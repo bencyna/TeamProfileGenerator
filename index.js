@@ -150,29 +150,30 @@ const writeFile = () => {
       extDet = `Office Number: ${employee.officeNumber}`;
     }
     if (employee.github) {
-      extDet = `Github: ${employee.github}`;
+      extDet = `Github: <a href = "${employee.github}" target = "_blank">Github</a>`;
     }
     if (employee.school) {
       extDet = `School: ${employee.school}`;
     }
 
     addToFile += 
-  `<div class="col-md-4 person">
-  <header class="main">
-    <h4>${personName}</h4>
-    <h6>${personRole}</h6>
-  </header>  
-  <div class="bio">
-      <ul>
-          <li>id: ${personId}</li>
-          <li>Email: ${personEmail}</li>
-          <li>${extDet}</li>
-      </ul>
-  </div> 
-  </div>`;
+`<div class="col-md-4 person">
+              <header class="main">
+                <h4>${personName}</h4>
+                <h6>${personRole}</h6>
+              </header>  
+              <div class="bio">
+                <ul>
+                  <li>id: ${personId}</li>
+                  <li>Email: <a href="mailto:${personEmail}"> ${personEmail} </a></li>
+                  <li>${extDet}</li>
+                </ul>
+              </div> 
+            </div>`;
   }
 
-  newFile = newFile = `<!DOCTYPE html>
+  newFile = newFile = 
+  `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -187,26 +188,24 @@ const writeFile = () => {
       crossorigin="anonymous"
     />
   </head>
-  <body style = "background-color: #203647;>
+  <body style="background-color: #203647;">
     <header id="head"> 
       <h1>Our Team</h1>
     </header>
     <main class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <section class="row people">
-                    ${addToFile}                         
-                    </div>
-                </section>
-            </div>
+      <div class="row">
+        <div class="col-md-9">
+          <section class="row people">
+            ${addToFile}                         
+          </section>
         </div>
-
+      </div>
     </main>
   </body>
 </html>
 `;
 
-  fs.writeFile("./index.html", newFile, null, (err) => {
+  fs.writeFile("./dist/index.html", newFile, null, (err) => {
     err
       ? console.log("Oops, there was a problem: " + err)
       : console.log(responses[0].name);
