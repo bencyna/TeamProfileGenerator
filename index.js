@@ -128,7 +128,7 @@ const genEngineer = () => {
       const { name, email, id, github } = results;
       const newEngineer = new Engineer(name, id, email, github, "Engineer");
       newEngineer.getGithub(github);
-      newManager.getRole("Engineer");
+      newEngineer.getRole("Engineer");
       responses.push(newEngineer);
       genInOrEngorEx();
     });
@@ -147,16 +147,17 @@ const writeFile = () => {
     let extDet = "";
 
     if (employee.officeNumber) {
-      extDet = employee.officeNumber;
+      extDet = `Office Number: ${employee.officeNumber}`;
     }
     if (employee.github) {
-      extDet = employee.github;
+      extDet = `Github: ${employee.github}`;
     }
-    if (employee.schoolAttend) {
-      extDet = employee.schoolAttend;
+    if (employee.school) {
+      extDet = `School: ${employee.school}`;
     }
 
-    addToFile += `<div class="col-md-4">
+    addToFile += 
+  `<div class="col-md-4 person">
   <header class="main">
     <h4>${personName}</h4>
     <h6>${personRole}</h6>
@@ -165,8 +166,9 @@ const writeFile = () => {
       <ul>
           <li>id: ${personId}</li>
           <li>Email: ${personEmail}</li>
-          <li>alternative: ${extDet}</li>
+          <li>${extDet}</li>
       </ul>
+  </div> 
   </div>`;
   }
 
@@ -185,14 +187,14 @@ const writeFile = () => {
       crossorigin="anonymous"
     />
   </head>
-  <body>
+  <body style = "background-color: #203647;>
     <header id="head"> 
       <h1>Our Team</h1>
     </header>
     <main class="container">
         <div class="row">
             <div class="col-md-9">
-                <section class="row">
+                <section class="row people">
                     ${addToFile}                         
                     </div>
                 </section>
@@ -204,7 +206,7 @@ const writeFile = () => {
 </html>
 `;
 
-  fs.writeFile("index.html", newFile, null, (err) => {
+  fs.writeFile("./index.html", newFile, null, (err) => {
     err
       ? console.log("Oops, there was a problem: " + err)
       : console.log(responses[0].name);
